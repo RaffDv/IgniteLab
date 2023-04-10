@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import { Notification } from '../../../../app/entities/notification';
-import { NotificationsRepository } from '../../../../app/repositories/notification-repository';
+import { Notification } from '@app/entities/notification';
+import { NotificationsRepository } from '@app/repositories/notification-repository';
 import { PrismaService } from '../prisma.service';
+import { PrismaNotificationMapper } from '../mappers/prisma-notification-mapper';
 
 @Injectable()
 export class PrismaNotificationsRespository implements NotificationsRepository {
@@ -10,16 +11,19 @@ export class PrismaNotificationsRespository implements NotificationsRepository {
 
     }
 
+
     async create(notification: Notification): Promise<void> {
+
+        const raw = PrismaNotificationMapper.toPrisma(notification)
         await this.prismaService.notification.create({
-            data: {
-                id: notification.Id,
-                Content: notification.content.value,
-                Category: notification.category,
-                recipientId: notification.recipientId,
-                readAt: notification.readAt,
-                CreatedAt: notification.createdAt
-            }
+            data: raw
         })
+    }
+
+    async findById(notification: string): Promise<Notification | null> {
+        throw new Error('Method not implemented.');
+    }
+    async save(notification: Notification): Promise<void> {
+        throw new Error('Method not implemented.');
     }
 }
