@@ -1,8 +1,9 @@
-import { sandNotification } from './send-notification';
-
+import { NotificationsRepo } from '../repositories/notification-repository';
+import { sendNotification } from './send-notification';
+const notificationRepository: NotificationsRepo[] = []
 describe('send notification', () => {
   it('should send a notification', async () => {
-    const sendNotification = new sandNotification();
+    const sendNotification = new sendNotification();
     const { notification } = await sendNotification.execute({
       category: 'social',
       content: 'this is a social notification',
