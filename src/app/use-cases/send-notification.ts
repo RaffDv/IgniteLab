@@ -1,31 +1,36 @@
 import { Content } from '../entities/content';
 import { Notification } from '../entities/notification';
-import { NotificationsRepo } from '../repositories/notification-repository';
+import { NotificationsRepository } from '../repositories/notifications-repository';
 
-interface sandNotificationRequest {
+interface SendNotificationRequest {
   recipientId: string;
   content: string;
   category: string;
 }
 
-interface sandNotificationResponse {
+interface SendNotificationResponse {
   notification: Notification;
 }
 
-export class sandNotification {
-  constructor(private notificationRepo: NotificationsRepo) {}
+export class SendNotification {
+  // eslint-disable-next-line prettier/prettier
+  constructor(private notificationsRepository: NotificationsRepository) { }
 
   async execute(
-    request: sandNotificationRequest,
-  ): Promise<sandNotificationResponse> {
-    const { recipientId, category, content } = request;
+    request: SendNotificationRequest,
+  ): Promise<SendNotificationResponse> {
+    const { category, content, recipientId } = request;
+
     const notification = new Notification({
-      recipientId,
-      content: new Content(content),
       category,
+      content: new Content(content),
+      recipientId,
     });
 
-    await this.notificationRepo.create(notification);
+    // persistir notification no bd
+
+    await this.notificationsRepository.create(notification);
+
     return {
       notification,
     };
