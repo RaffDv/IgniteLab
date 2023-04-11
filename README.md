@@ -1,2 +1,2 @@
 # IgniteLab
-Rockeatseat Ignite Lab with Nest.js . Full-Stack project
+Rockeatseat Ignite Lab with Nest.js . Back-End project
