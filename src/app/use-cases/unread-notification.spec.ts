@@ -1,31 +1,34 @@
 /* eslint-disable prettier/prettier */
 import { InMemoryNotificationsRepository } from '@test/repositories/in-memory-notifications-repository';
-import { CancelNotification } from './cancel-notification';
-import { NotificationNotFound } from './errors/notification-not-found';
 import { makeNotification } from '@test/factories/notifications-factory';
+import { ReadNotification } from './read-notification';
+import { NotificationNotFound } from './errors/notification-not-found';
+import { unReadNotification } from './unread-notification';
 
-describe('cancel notification', () => {
-    it('should be able to cancel a notification', async () => {
+
+describe('unread notification', () => {
+    it('should be able to unread a notification', async () => {
         const notificationsRepository = new InMemoryNotificationsRepository();
-        const cancelNotification = new CancelNotification(notificationsRepository);
+        const UnreadNotification = new unReadNotification(notificationsRepository);
 
-        const notification = makeNotification()
+        const notification = makeNotification({
+            readAt: new Date()
+        })
 
         await notificationsRepository.create(notification)
 
-        await cancelNotification.execute({
+        await UnreadNotification.execute({
             notificationId: notification.Id
         });
 
-        expect(notificationsRepository.notifications[0].cancelAt).toEqual(expect.any(Date));
+        expect(notificationsRepository.notifications[0].readAt).toBeNull()
     });
-
     it('should not be able to cancel a notification when it does not exist', async () => {
         const notificationsRepository = new InMemoryNotificationsRepository();
-        const cancelNotification = new CancelNotification(notificationsRepository);
+        const UnreadNotification = new unReadNotification(notificationsRepository);
 
         expect(() => {
-            return cancelNotification.execute({
+            return UnreadNotification.execute({
                 notificationId: "fake-notification-id"
             })
         }).rejects.toThrow(NotificationNotFound)
