@@ -73,6 +73,7 @@ export class Notification {
   public get cancelAt(): Date | null | undefined {
     return this.props.canceledAt;
   }
+
   // cancel method
   public cancel() {
     this.props.canceledAt = new Date();

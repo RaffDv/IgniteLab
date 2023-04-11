@@ -6,7 +6,7 @@ import { Content } from '@app/entities/content';
 import { NotificationNotFound } from './errors/notification-not-found';
 
 describe('cancel notification', () => {
-    it('should be able send a notification', async () => {
+    it('should be able to cancel a notification', async () => {
         const notificationsRepository = new InMemoryNotificationsRepository();
         const cancelNotification = new CancelNotification(notificationsRepository);
 
@@ -28,8 +28,6 @@ describe('cancel notification', () => {
     it('should not be able to cancel a notification when it does not exist', async () => {
         const notificationsRepository = new InMemoryNotificationsRepository();
         const cancelNotification = new CancelNotification(notificationsRepository);
-
-
 
         expect(() => {
             return cancelNotification.execute({
